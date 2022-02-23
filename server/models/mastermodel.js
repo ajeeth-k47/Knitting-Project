@@ -56,7 +56,23 @@ const companymasterSchema = new mongoose.Schema({
   State:String,
   City:String,
   Pincode:Number,
-  PhoneNo:Number,
+  PhoneNo:String,
+  MobileNo:Number,
+  Email:String,
+  Website:String,
+  GSTNo:String,
+  PANNo:String
+})
+
+const suppliermasterSchema = new mongoose.Schema({
+  Name:String,
+  Address1:String,
+  Address2:String,
+  Country:String,
+  State:String,
+  City:String,
+  Pincode:Number,
+  PhoneNo:String,
   MobileNo:Number,
   Email:String,
   Website:String,
@@ -73,6 +89,7 @@ const millmaster= mongoose.model('millmaster', millmasterSchema);
 const machinemaster= mongoose.model('machinemaster', machinemasterSchema);
 const taxmaster= mongoose.model('taxmaster',taxmasterSchema);
 const companymaster= mongoose.model('companymaster',companymasterSchema);
+const suppliermaster= mongoose.model('suppliermaster',suppliermasterSchema);
 
 module.exports={
   diamaster,
@@ -84,4 +101,5 @@ module.exports={
   machinemaster,
   taxmaster,
   companymaster,
+  suppliermaster,
 }

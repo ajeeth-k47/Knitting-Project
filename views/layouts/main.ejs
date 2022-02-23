@@ -13,7 +13,10 @@
 
     <!--my styles-->
     <link rel="stylesheet" href="/css/styles.css" />
-    
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <!-- scripts file-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -21,6 +24,142 @@
     </head>
 
     <body>
+    <div class="sidebar">
+        <div class="logo-details">
+          <div class="logo_name">Vinayaga Fabrics</div>
+          <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+          <li>
+            <a href="#">
+                <i class="fas fa-home-lg-alt"></i>
+              <span class="links_name">Home</span>
+            </a>
+            <span class="tooltip">Home</span>
+          </li>
+          <li></li>
+          <li>
+            <div>
+              <a class="dropbtn"><i class="fa-icon fab fa-first-order-alt"></i>Orders</a>
+            <div class="container">
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Orders</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Knitting Programs</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Deliveries</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Deliveried Goods</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Generate Bills</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Payment Entry</span>
+              </a>
+              <a href="#">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Supplier Transaction-<br />Report</span>
+              </a>
+            </div>
+          </li>
+          <li>
+              <a class="dropbtn"><i class="fa-icon fas fa-list"></i>Operators</a>
+            <div class="container">
+              <a href="/api/v1/operator/operatorlist">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Operator</span>
+              </a>
+              <a href="/api/v1/operator/operatormapping">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Operator  Machine <br />Mapping</span>
+              </a>
+            </div>
+          </li>
+          <li>
+              <a class="dropbtn"><i class="fa-icon fas fa-brain"></i>Masters</a>
+            <div class="container">
+              <a href="/api/v1/master/dia">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Dia Master</span>
+              </a>
+              <a href="/api/v1/master/gauge">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Gauge Master</span>
+              </a>
+              <a href="/api/v1/master/fabric">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Fabric Master</span>
+              </a>
+              <a href="/api/v1/master/tax">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Tax Master</span>
+              </a>
+              <a href="/api/v1/master/company">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Company Master</span>
+              </a>
+              <a href="/api/v1/master/supplier">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Supplier Master</span>
+              </a>
+              <a href="/api/v1/master/mill">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Mill Master</span>
+              </a>
+              <a href="/api/v1/master/yarn">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Yarn Master</span>
+              </a>
+              <a href="/api/v1/master/color">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Color</span>
+              </a>
+              <a href="/api/v1/master/machine">
+                  <i class="far fa-dot-circle"></i>
+                <span class="links_name">Machine Master</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <script>
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        var dropdown = document.getElementsByClassName("dropbtn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+          dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+              dropdownContent.style.display = "none";
+            } else {
+              dropdownContent.style.display = "block";
+            }
+          });
+        }
+      //  closeBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          menuBtnChange();
+      //  });
+        function menuBtnChange() {
+          if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+          } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+          }
+        }
+      </script>
 
       <%- body -%>
 

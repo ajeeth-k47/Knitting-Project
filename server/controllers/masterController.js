@@ -1,5 +1,5 @@
-require('../models/database');
-const {diamaster,gaugemaster,fabricmaster,yarnmaster,colormaster,millmaster,machinemaster,taxmaster,companymaster} = require('../models/mastermodel');
+const masterdb=require('../models/masterdatabase');
+const {diamaster,gaugemaster,fabricmaster,yarnmaster,colormaster,millmaster,machinemaster,taxmaster,companymaster,suppliermaster} = require('../models/mastermodel');
 
 
 
@@ -8,7 +8,7 @@ const {diamaster,gaugemaster,fabricmaster,yarnmaster,colormaster,millmaster,mach
 exports.diapage = async(req,res) => {
   try{
     const dias = await diamaster.find({});
-    res.render('diamaster',{dias});
+    res.render('masters/diamaster',{dias});
   }
   catch(error){
     res.send('error occured');
@@ -18,7 +18,7 @@ exports.diapage = async(req,res) => {
 exports.gaugepage = async(req,res) => {
   try{
     const gauges = await gaugemaster.find({});
-    res.render('gaugemaster',{gauges});
+    res.render('masters/gaugemaster',{gauges});
   }
   catch(error){
     res.send('error occured ',error);
@@ -28,7 +28,7 @@ exports.gaugepage = async(req,res) => {
 exports.fabricpage = async(req,res) => {
   try{
     const fabrics = await fabricmaster.find({});
-    res.render('fabricmaster',{fabrics});
+    res.render('masters/fabricmaster',{fabrics});
   }
   catch(error){
     res.send('error occured ',error);
@@ -38,7 +38,7 @@ exports.fabricpage = async(req,res) => {
 exports.yarnpage = async(req,res) => {
   try{
     const yarns = await yarnmaster.find({});
-    res.render('yarnmaster',{yarns});
+    res.render('masters/yarnmaster',{yarns});
   }
   catch(error){
     res.send('error occured ',error);
@@ -48,7 +48,8 @@ exports.yarnpage = async(req,res) => {
 exports.colorpage = async(req,res) => {
   try{
     const colors = await colormaster.find({});
-    res.render('colormaster',{colors});
+    const visibility = 1;
+    res.render('masters/colormaster',{colors,visibility});
   }
   catch(error){
     res.send('error occured ',error);
@@ -58,7 +59,7 @@ exports.colorpage = async(req,res) => {
 exports.millpage = async(req,res) => {
   try{
     const mills = await millmaster.find({});
-    res.render('millmaster',{mills});
+    res.render('masters/millmaster',{mills});
   }
   catch(error){
     res.send('error occured ',error);
@@ -70,7 +71,7 @@ exports.machinepage = async(req,res) => {
     const dias = await diamaster.find({});
     const gauges = await gaugemaster.find({});
     const machines = await machinemaster.find({});
-    res.render('machinemaster' ,{dias,gauges,machines});
+    res.render('masters/machinemaster' ,{dias,gauges,machines});
   }
   catch(error){
     res.send('error occured ' ,error);
@@ -80,7 +81,7 @@ exports.machinepage = async(req,res) => {
 exports.taxpage = async(req,res) => {
   try{
     const taxs = await taxmaster.find({});
-    res.render('taxmaster' ,{taxs});
+    res.render('masters/taxmaster' ,{taxs});
 
   }
   catch(error){
@@ -90,7 +91,29 @@ exports.taxpage = async(req,res) => {
 
 exports.createpage = async(req,res) => {
   try{
-      res.render('create',{name:req.body.mastername});
+      res.render('masters/create',{name:req.body.mastername});
+  }
+  catch(error){
+    res.send('error occured' ,error);
+  }
+}
+
+exports.updatepage = async(req,res) => {
+  try{
+    if(req.body.mastername == "Company"){
+      const company = await companymaster.findOne({id:req.body.id, Name:req.body.name});
+      res.render('masters/update',{name:req.body.mastername , detail:company});
+    }
+    else if(req.body.mastername == "Color")
+    {
+      const colors = await colormaster.findOne({Color:req.body.name});
+      const visibility = 0;
+      res.render('masters/colormaster',{colors,visibility});
+    }
+    else{
+      const supplier = await suppliermaster.findOne({id:req.body.id, Name:req.body.name});
+      res.render('masters/update',{name:req.body.mastername , detail:supplier});
+    }
   }
   catch(error){
     res.send('error occured' ,error);
@@ -100,7 +123,17 @@ exports.createpage = async(req,res) => {
 exports.companypage = async(req,res) => {
   try{
     const companies = await companymaster.find({})
-    res.render('companymaster',{companies});
+    res.render('masters/companymaster',{companies});
+  }
+  catch(error){
+    res.send('error occured' ,error)
+  }
+}
+
+exports.supplierpage = async(req,res) => {
+  try{
+    const suppliers = await suppliermaster.find({})
+    res.render('masters/suppliermaster',{suppliers});
   }
   catch(error){
     res.send('error occured' ,error)
@@ -114,40 +147,52 @@ exports.searchMaster = async(req,res) => {
     if(req.body.page=='diamaster')
     {
       const dias = await diamaster.find({Dia:req.body.name});
-      res.render('diamaster',{dias});
+      res.render('masters/diamaster',{dias});
     }
     else if(req.body.page=='gaugemaster')
     {
       const gauges = await gaugemaster.find({Gauge:req.body.name});
-      res.render('gaugemaster',{gauges});
+      res.render('masters/gaugemaster',{gauges});
     }
     else if(req.body.page=='fabricmaster')
     {
       const fabrics = await fabricmaster.find({FabricType:{$regex:(req.body.name).toUpperCase()}});
-      res.render('fabricmaster',{fabrics});
+      res.render('masters/fabricmaster',{fabrics});
    }
    else if(req.body.page=='yarnmaster')
    {
      const yarns = await yarnmaster.find({YarnCount:req.body.name});
-     res.render('yarnmaster',{yarns});
+     res.render('masters/yarnmaster',{yarns});
    }
    else if(req.body.page=='millmaster')
    {
      const mills = await millmaster.find({Mill:{$regex:(req.body.name).toUpperCase()}});
-     res.render('millmaster',{mills});
+     res.render('masters/millmaster',{mills});
    }
    else if(req.body.page=='colormaster')
    {
      const colors = await colormaster.find({Color:{$regex:(req.body.name).toLowerCase()}});
-     res.render('colormaster',{colors});
+     const visibility = 1;
+     res.render('masters/colormaster',{colors,visibility});
    }
    else if(req.body.page=='machinemaster'){
      const dias = await diamaster.find({});
      const gauges = await gaugemaster.find({});
      const machines = await machinemaster.find({MachineName:{$regex:(req.body.name).toUpperCase()}});
-     res.render('machinemaster' ,{dias,gauges,machines});
+     res.render('masters/machinemaster' ,{dias,gauges,machines});
    }
-
+   else if(req.body.page=='taxmaster'){
+     const taxs = await taxmaster.find({TaxName:{$regex:(req.body.name).toUpperCase()}})
+     res.render('masters/taxmaster',{taxs});
+   }
+   else if(req.body.page=='companymaster'){
+     const companies = await companymaster.find({Name:{$regex:(req.body.name).toUpperCase()}})
+     res.render('masters/companymaster',{companies});
+   }
+   else if(req.body.page=='suppliermaster'){
+     const suppliers = await suppliermaster.find({Name:{$regex:(req.body.name).toUpperCase()}})
+     res.render('masters/suppliermaster',{suppliers});
+   }
   }
   catch(error){
     res.send('No records found')
@@ -288,7 +333,125 @@ exports.addTax = async(req,res) => {
   }
 }
 
-exports.addCompany = async
+exports.addCompany = async(req,res) => {
+  try{
+    const newCompany = new companymaster({
+      Name:(req.body.name).toUpperCase(),
+      Address1:(req.body.address1).toUpperCase(),
+      Address2:(req.body.address2).toUpperCase(),
+      Country:req.body.country,
+      State:req.body.state,
+      City:req.body.city,
+      Pincode:Number(req.body.pin),
+      PhoneNo:req.body.phone,
+      MobileNo:Number(req.body.mobile),
+      Email:req.body.email,
+      Website:req.body.website,
+      GSTNo:req.body.gst,
+      PANNo:req.body.pan
+    })
+    await newCompany.save();
+    res.redirect('company');
+  }
+  catch(error){
+    res.send(error);
+  }
+}
+
+exports.addSupplier = async(req,res) => {
+  try{
+    const newSupplier = new suppliermaster({
+      Name:(req.body.name).toUpperCase(),
+      Address1:(req.body.address1).toUpperCase(),
+      Address2:(req.body.address2).toUpperCase(),
+      Country:req.body.country,
+      State:req.body.state,
+      City:req.body.city,
+      Pincode:Number(req.body.pin),
+      PhoneNo:req.body.phone,
+      MobileNo:Number(req.body.mobile),
+      Email:req.body.email,
+      Website:req.body.website,
+      GSTNo:req.body.gst,
+      PANNo:req.body.pan
+    })
+    await newSupplier.save();
+    res.redirect('supplier');
+  }
+  catch(error){
+    res.send('error occured');
+  }
+}
+
+exports.updateCompany = async(req,res) => {
+  try{
+    const filter = {id:req.body.updatedforid,Name:req.body.updatedforname};
+    const update = {
+      Name:(req.body.name).toUpperCase(),
+      Address1:(req.body.address1).toUpperCase(),
+      Address2:(req.body.address2).toUpperCase(),
+      Country:req.body.country,
+      State:req.body.state,
+      City:req.body.city,
+      Pincode:Number(req.body.pin),
+      PhoneNo:req.body.phone,
+      MobileNo:Number(req.body.mobile),
+      Email:req.body.email,
+      Website:req.body.website,
+      GSTNo:req.body.gst,
+      PANNo:req.body.pan
+    }
+    await companymaster.findOneAndUpdate(filter,update,{new:true});
+    res.redirect('company');
+  }
+  catch(error){
+    res.send('error occured');
+  }
+}
+
+
+exports.updateSupplier = async(req,res) => {
+  try{
+    const filter = {id:req.body.updatedforid,Name:req.body.updatedforname};
+    const update = {
+      Name:(req.body.name).toUpperCase(),
+      Address1:(req.body.address1).toUpperCase(),
+      Address2:(req.body.address2).toUpperCase(),
+      Country:req.body.country,
+      State:req.body.state,
+      City:req.body.city,
+      Pincode:Number(req.body.pin),
+      PhoneNo:req.body.phone,
+      MobileNo:Number(req.body.mobile),
+      Email:req.body.email,
+      Website:req.body.website,
+      GSTNo:req.body.gst,
+      PANNo:req.body.pan
+    }
+    await suppliermaster.findOneAndUpdate(filter,update,{new:true});
+    res.redirect('supplier');
+  }
+  catch(error){
+    res.send('error occured');
+  }
+}
+
+
+exports.updateColor = async(req,res) => {
+  try{
+    const filter = {Color:req.body.updatedforcolor};
+    const update = {
+      Color:(req.body.color).toLowerCase(),
+      Alternate:(req.body.alternate).toLowerCase(),
+      Status:'Active'
+    }
+    await colormaster.findOneAndUpdate(filter,update,{new:true});
+    res.redirect('color');
+  }
+  catch(error){
+    res.send('error occured');
+  }
+}
 /*async function insertDummy(){
   try{
     await fabricmaster.insertMany([{"FabricType":24,"Status":"Active"}]);
